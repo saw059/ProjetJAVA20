@@ -187,7 +187,7 @@ public class Login extends javax.swing.JFrame {
         String email =jTextField_email.getText();
         String password =String.valueOf(jPasswordField.getPassword());
         
-        String query="SELECT * FROM 'users' WHERE 'email'=? AND 'password' =?";
+        String query="SELECT * FROM `users` WHERE `email`=? AND `password`=? ";
         try {
             st = My_Cnx.getConnection().prepareStatement(query);
             st.setString(1,email);
@@ -235,6 +235,12 @@ public class Login extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 

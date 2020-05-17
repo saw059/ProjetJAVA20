@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 public class My_Cnx {
     
     private static String servername ="localhost";
-    private static String dbname ="users";
+    private static String dbname ="edt";
     private static String password ="root";
     private static String username ="root";
     private static Integer portnumber =8889;
