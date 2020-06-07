@@ -1,14 +1,11 @@
-package view;
+package planningSalle;
 //import planningEtudiant.*;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -19,13 +16,18 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
-public class planningEtudiantECE extends JFrame{
+import planningEtudiant.planningEtudiantECE;
+
+public class planningSalleECE extends JFrame{
 
 
 	private static final long serialVersionUID = 668229218845723247L;
 	
-	JButton  b1 = new JButton( "Semaine prï¿½cï¿½dente" );
+	int compteurSemaine = 21;
+	JButton  b1 = new JButton( "Semaine précédente" );
 	JButton  b2 = new JButton( "Semaine suivante" );
 	CardLayout cl = new CardLayout();
 	JPanel content = new JPanel();
@@ -33,28 +35,27 @@ public class planningEtudiantECE extends JFrame{
 
 //--------------------------CONSTRUCTEUR DE LA CLASSE FENETRE-----------------------------------
 	@SuppressWarnings("static-access")
-	public planningEtudiantECE() throws Exception {
+	public planningSalleECE( String nomSalle, String email, String password ) throws Exception {
 
-		this.setTitle("Planning ï¿½tudiant");
-		this.setExtendedState(this.MAXIMIZED_BOTH);
-		//this.setSize( new Dimension( 600, 400) );
+		this.setTitle( "Planning étudiant" );
+		this.setExtendedState( this.MAXIMIZED_BOTH );
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
 
-		this.setJMenuBar( createMenuBar() );
+		this.setJMenuBar( createMenuBar( email, password ) );
 
 		JPanel contentPane = (JPanel) this.getContentPane();
 		contentPane.setLayout( new BorderLayout() );
 		
-
-		coursSemaine21 grille21 = new coursSemaine21();
-		coursSemaine22 grille22 = new coursSemaine22();
+	
+		coursSalleSemaine21 grille21 = new coursSalleSemaine21();
+//		coursSemaine22 grille22 = new coursSemaine22();
 		
 		content.setLayout( cl );
 		
-		content.add( grille21.grilleEdT(), listContent[0] );
-		content.add( grille22.grilleEdT(), listContent[1] );
-		
+		content.add( grille21.grilleEdT( nomSalle ), listContent[0] );
+//		content.add( grille22.grilleEdT(), listContent[1] );
+//		
 	    this.getContentPane().add( content, BorderLayout.CENTER );
 	    this.getContentPane().add( createDay(), BorderLayout.NORTH );
 	    this.getContentPane().add( contentPane3() , BorderLayout.SOUTH );
@@ -65,42 +66,56 @@ public class planningEtudiantECE extends JFrame{
 
 
 	}
+	private JMenuBar createMenuBar( String email, String password) {
 
-    planningEtudiantECE(String string, String string0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-	private JMenuBar createMenuBar() {
-
-		// La barre de menu ï¿½ proprement parler
+		// La barre de menu à proprement parler
 		JMenuBar mb = new JMenuBar();
 
-		// dï¿½finition du menu home
+		// définition du menu home
 		JMenu mnuHome = new JMenu();
 		mnuHome.setIcon( new ImageIcon( "Home.png" ) );
 
 		mb.add( mnuHome );
 
-		// Dï¿½finition du menu dï¿½roulant "Cours" et de son contenu
+		// Définition du menu déroulant "Cours" et de son contenu
 		JMenu mnuCours = new JMenu( "Cours" );
 		mnuCours.setMnemonic( 'C' );
 
 		JMenuItem mnuNew = new JMenuItem( "Emploi du temps" );
-		mnuCours.add( mnuNew );
+		mnuNew.setIcon( new ImageIcon( "icons8-fiche-technique-40.png" ) );
+        mnuNew.addActionListener( new ActionListener() {
+			
+			@Override
+			public void actionPerformed( ActionEvent e) {
+				
+                planningEtudiantECE fen;
+				try {
+					UIManager.setLookAndFeel( new NimbusLookAndFeel() );
+					fen = new planningEtudiantECE( email, password );
+					fen.setVisible( true );
+					fen.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+				} catch ( Exception e1 ) {
+					e1.printStackTrace();
+				}
+				
+				
+			}
+		});
+        mnuCours.add( mnuNew );
 
 		mnuCours.addSeparator();
 
-                JMenuItem mnuOpenFile = new JMenuItem("Rï¿½capitulatif des cours");
-                mnuOpenFile.addActionListener(this::recapLis);
-                mnuCours.add(mnuOpenFile);
-                
+		JMenuItem mnuOpenFile = new JMenuItem( "Récapitulatif des cours" );
+		mnuOpenFile.setIcon( new ImageIcon( "icons8-google-recaptcha-64.png" ) );
+		mnuCours.add( mnuOpenFile );
 
 		mb.add( mnuCours );
 
-		// Dï¿½finition du menu dï¿½roulant "Vie scolaire" et de son contenu
+		// Définition du menu déroulant "Vie scolaire" et de son contenu
 		JMenu mnuVieSco = new JMenu( "Vie scolaire" );
 		mnuVieSco.setMnemonic( 'V' );
 
-		JMenuItem mnuUndo = new JMenuItem( "Relevï¿½ d'absence" );
+		JMenuItem mnuUndo = new JMenuItem( "Relevé d'absence" );
 		mnuVieSco.add( mnuUndo );
 
 		JMenuItem mnuRedo = new JMenuItem( "Liste d'intervenant" );
@@ -108,16 +123,24 @@ public class planningEtudiantECE extends JFrame{
 
 		mnuVieSco.addSeparator();
 
-		JMenuItem mnuCopy = new JMenuItem( "Scolaritï¿½" );
+		JMenuItem mnuCopy = new JMenuItem( "Scolarité" );
 		mnuVieSco.add( mnuCopy );
 
 		mb.add( mnuVieSco );
- 
-		// Dï¿½finition du menu dï¿½roulant "Salle" et de son contenu
+
+		// Définition du menu déroulant "Salle" et de son contenu
 		JMenu mnuSalle = new JMenu( "Salle" );
 		mnuSalle.setMnemonic( 'S' );
 
 		JMenuItem mnuEDT = new JMenuItem( "Emploi du temps" );
+		mnuEDT.addActionListener( new ActionListener() {
+
+			@Override
+			public void actionPerformed( ActionEvent e ) {
+				fenetreRechercheSalle frs = new fenetreRechercheSalle( email, password );
+
+			}
+		});
 		mnuSalle.add( mnuEDT );
 
 		JMenuItem mnuSalleLibre = new JMenuItem( "Salle libre" );
@@ -127,14 +150,6 @@ public class planningEtudiantECE extends JFrame{
 
 		return mb;
 	}
-        private void recapLis( ActionEvent event ){
-                Recap form = new Recap();
-                form.setVisible(true);
-                form.pack();
-                this.dispose();
-            
-        
-        }
 
 	private JLabel createDay() {
 
@@ -155,42 +170,18 @@ public class planningEtudiantECE extends JFrame{
 		JPanel contentPane3 = new JPanel();
 		contentPane3.setLayout( new BoxLayout( contentPane3, BoxLayout.LINE_AXIS ) );
 		
+		JLabel jlStatus1 = new JLabel( "Semaine 21  ");
+		jlStatus1.setPreferredSize( new Dimension( 100, 30 ) );
+		contentPane3.add( jlStatus1 );
 		
 		b1.addActionListener( new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				cl.previous( content );
+				compteurSemaine--;
+				jlStatus1.setText( "Semaine " + compteurSemaine + "  " );
 				
-			}
-		});
-		b1.addMouseListener( new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				b1.setForeground( Color.GREEN );
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				b1.setForeground( Color.BLUE );
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				b1.setForeground( Color.RED );
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				b1.setForeground( Color.YELLOW );
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				b1.setForeground( Color.PINK );
 			}
 		});
 		b1.setIcon( new ImageIcon( "FlecheGauche.jfif" ) );
@@ -200,6 +191,8 @@ public class planningEtudiantECE extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				cl.next( content );
+				compteurSemaine++;
+				jlStatus1.setText( "Semaine " + compteurSemaine + "  " );
 				
 			}
 		});
@@ -211,6 +204,8 @@ public class planningEtudiantECE extends JFrame{
 		return contentPane3;
 		
 	}
+	
+
 	
 
 

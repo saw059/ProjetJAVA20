@@ -1,4 +1,4 @@
-package view;
+package planningSalle;
 
 
 import java.awt.Graphics;

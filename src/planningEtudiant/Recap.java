@@ -183,7 +183,7 @@ public class Recap extends JFrame {
 		jLabel2.setBackground(new Color( 0, 102, 102 ) );
 		jLabel2.setFont(new Font( "Tahoma", 0, 24 ) ); 
 		jLabel2.setForeground(new Color( 255, 255, 255 ) );
-		jLabel2.setText( "Dï¿½tails de la matiere" );
+		jLabel2.setText( "Détails de la matiere" );
 
 		GroupLayout jPanel1Layout = new GroupLayout( jPanel1 );
 		jPanel1.setLayout( jPanel1Layout );
@@ -230,7 +230,6 @@ public class Recap extends JFrame {
 		jMenu3.add( jMenuItem2 );
 
 		jMenuItem3.setIcon(new ImageIcon( "icons8-google-recaptcha-64.png" ) );
-		jMenuItem3.setText( "Rï¿½capitulatif des cours" );
 		jMenuItem3.addActionListener( new ActionListener() {
 			public void actionPerformed( ActionEvent evt ) {
 				try {
@@ -338,38 +337,7 @@ public class Recap extends JFrame {
 
 
 	
-/*	public static void main( String args[] ) {
-		
-		
-		try {
-			for ( UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels() ) {
-				if ("Nimbus".equals(info.getName() ) ) {
-					UIManager.setLookAndFeel(info.getClassName() );
-					break;
-				}
-			}
-		} catch ( ClassNotFoundException ex ) {
-			java.util.logging.Logger.getLogger( Recap.class.getName() ).log( java.util.logging.Level.SEVERE, null, ex );
-		} catch ( InstantiationException ex ) {
-			java.util.logging.Logger.getLogger( Recap.class.getName() ).log( java.util.logging.Level.SEVERE, null, ex );
-		} catch ( IllegalAccessException ex ) {
-			java.util.logging.Logger.getLogger( Recap.class.getName() ).log( java.util.logging.Level.SEVERE, null, ex );
-		} catch ( javax.swing.UnsupportedLookAndFeelException ex ) {
-			java.util.logging.Logger.getLogger( Recap.class.getName() ).log( java.util.logging.Level.SEVERE, null, ex );
-		}
-		
 
-		
-		java.awt.EventQueue.invokeLater( new Runnable() {
-			public void run() {
-				try {
-					new Recap().setVisible( true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	
 
