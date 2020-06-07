@@ -330,6 +330,8 @@ public class coursSemaine21 {
 	}
 
 	private String testCours_18_08_30() throws Exception {
+                LOG e=new LOG();
+                System.out.println(e.getIdU());
 
 		Properties props = new Properties();
 
@@ -345,7 +347,8 @@ public class coursSemaine21 {
 
 		try (Connection connection = DriverManager.getConnection(url, dbLogin, dbPassword)) {
 
-			String strSql = "SELECT id_groupe FROM etudiant WHERE id_utilisateur = 2";
+			String strSql = "SELECT id_groupe FROM `etudiant`INNER JOIN `utilisateur`"
+                                + "ON etudiant.id_utilisateur=utilisateur.id WHERE email='"+e.getIdU()+"'";
 
 			try (Statement statement = connection.createStatement();
 					ResultSet resultSet = statement.executeQuery(strSql)) {

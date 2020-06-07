@@ -65,6 +65,10 @@ public class planningEtudiantECE extends JFrame{
 
 
 	}
+
+    planningEtudiantECE(String string, String string0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 	private JMenuBar createMenuBar() {
 
 		// La barre de menu � proprement parler
@@ -85,8 +89,10 @@ public class planningEtudiantECE extends JFrame{
 
 		mnuCours.addSeparator();
 
-		JMenuItem mnuOpenFile = new JMenuItem( "R�capitulatif des cours" );
-		mnuCours.add( mnuOpenFile );
+                JMenuItem mnuOpenFile = new JMenuItem("R�capitulatif des cours");
+                mnuOpenFile.addActionListener(this::recapLis);
+                mnuCours.add(mnuOpenFile);
+                
 
 		mb.add( mnuCours );
 
@@ -121,6 +127,14 @@ public class planningEtudiantECE extends JFrame{
 
 		return mb;
 	}
+        private void recapLis( ActionEvent event ){
+                Recap form = new Recap();
+                form.setVisible(true);
+                form.pack();
+                this.dispose();
+            
+        
+        }
 
 	private JLabel createDay() {
 

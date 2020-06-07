@@ -24,7 +24,9 @@ public class Recap extends javax.swing.JFrame {
         
 public void affichage(){
     try{
-        String query="SELECT nom as 'Matiere',MIN(date) as 'premiere senace',MAX(date) as 'derniere seance'  FROM `cour` GROUP by nom";
+        String query="SELECT nom as 'Matiere',MIN(heure_debut) as 'premiere senace',MAX(heure_debut) as 'derniere seance'"
+                + ",COUNT(id_cours) as 'nb.',TIME(SUM(TIME(heure_fin)-TIME(heure_debut))) as 'heures' "
+                + " FROM `cours`JOIN `seance` ON seance.id_cours=cours.id GROUP by nom";
         st = My_Cnx.getConnection().prepareStatement(query);
         rs=st.executeQuery();
         Table.setModel(DbUtils.resultSetToTableModel(rs));
@@ -48,6 +50,8 @@ public void affichage(){
      */
     public Recap() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        this.setExtendedState(Login.MAXIMIZED_BOTH);
         affichage();
         
     }
@@ -205,22 +209,22 @@ public void affichage(){
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 592, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(50, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(98, 98, 98))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(278, 278, 278))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(220, 220, 220)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(180, 180, 180))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,7 +259,11 @@ public void affichage(){
         
         try{
         
-       String query="SELECT nom as 'Matiere',date ,duree  FROM cour WHERE nom='"+matiere+"'";
+        String query="SELECT date,TIME(heure_debut) as 'De',TIME(heure_fin) as 'À',site.nom AS 'site',salle.nom AS 'salle',"
+                + "salle.capacite FROM `seance_salle`INNER JOIN `salle`ON seance_salle.id_salle=salle.id INNER JOIN `seance` "
+                + "ON seance_salle.id_seance=seance.id INNER JOIN `site`ON"
+                + " salle.id_site=site.id INNER JOIN `cours`"
+                + "ON seance.id_cours=cours.id WHERE cours.nom='"+matiere+"'";
         st = My_Cnx.getConnection().prepareStatement(query);
         rs=st.executeQuery();
         
@@ -277,9 +285,10 @@ public void affichage(){
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
             try {
                 // TODO add your handling code here:
-                Fenetre form = new Fenetre();
-                form.setVisible(true);
-                form.pack();
+                Depart form = new Depart();
+                Depart.main(null);
+                //form.setVisible(true);
+                //form.pack();
                 this.dispose();
             } catch (Exception ex) {
                 Logger.getLogger(Recap.class.getName()).log(Level.SEVERE, null, ex);
